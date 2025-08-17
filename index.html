@@ -15,6 +15,14 @@
         --glass:rgba(255,255,255,0.04);
         --radius:14px;
         --max-width:1100px;
+        --warning-bg:rgba(255,193,7,0.15);
+        --warning-border:#ffc107;
+        --success-bg:rgba(40,167,69,0.15);
+        --success-border:#28a745;
+        --info-bg:rgba(23,162,184,0.15);
+        --info-border:#17a2b8;
+        --danger-bg:rgba(220,53,69,0.15);
+        --danger-border:#dc3545;
       }
 
       *{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;smooth:always}
@@ -89,6 +97,8 @@
         transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
         position:relative;
         overflow:hidden;
+        font-size:14px;
+        white-space:nowrap;
       }
       
       .btn::before{
@@ -461,12 +471,13 @@
         inset:0;
         display:grid;
         place-items:center;
-        background:rgba(4,8,18,0.8);
-        backdrop-filter:blur(10px);
+        background:rgba(4,8,18,0.85);
+        backdrop-filter:blur(12px);
         visibility:hidden;
         opacity:0;
         transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
         z-index:1000;
+        padding:20px;
       }
       
       .modal.show{visibility:visible;opacity:1}
@@ -475,72 +486,83 @@
         width:100%;
         max-width:420px;
         background:var(--card);
-        padding:20px;
-        border-radius:16px;
+        padding:24px;
+        border-radius:20px;
         border:1px solid rgba(255,255,255,0.08);
-        backdrop-filter:blur(20px);
+        backdrop-filter:blur(24px);
         transform:scale(0.9) translateY(20px);
         transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
-        box-shadow:0 20px 60px rgba(0,0,0,0.4);
+        box-shadow:0 25px 80px rgba(0,0,0,0.5);
+        max-height:90vh;
+        overflow-y:auto;
       }
       
       .modal.show .modal-panel{transform:scale(1) translateY(0)}
       
-      .modal-panel h3{margin:0 0 12px 0}
+      .modal-panel h3{margin:0 0 16px 0;font-size:20px}
       
       .modal-actions{
         display:flex;
-        gap:8px;
-        margin-top:12px;
+        gap:10px;
+        margin-top:16px;
         flex-wrap:wrap;
       }
       
       .modal-close{
         position:absolute;
-        top:16px;
-        right:20px;
+        top:20px;
+        right:24px;
         background:none;
         border:none;
         color:var(--muted);
-        font-size:24px;
+        font-size:28px;
         cursor:pointer;
-        padding:4px;
-        border-radius:6px;
+        padding:8px;
+        border-radius:8px;
         transition:all 0.3s ease;
+        line-height:1;
       }
       
       .modal-close:hover{
         color:#ffffff;
         background:rgba(255,255,255,0.1);
+        transform:scale(1.1);
       }
 
       .install-modal .modal-panel{
-        max-width:600px;
-        max-height:80vh;
-        overflow-y:auto;
+        max-width:700px;
+        max-height:85vh;
       }
       
       .install-tabs{
         display:flex;
         gap:8px;
-        margin-bottom:20px;
+        margin-bottom:24px;
         border-bottom:1px solid rgba(255,255,255,0.1);
+        overflow-x:auto;
+        scrollbar-width:none;
+        -ms-overflow-style:none;
       }
+      
+      .install-tabs::-webkit-scrollbar{display:none}
       
       .tab-btn{
         background:none;
         border:none;
         color:var(--muted);
-        padding:10px 16px;
-        border-radius:8px 8px 0 0;
+        padding:12px 18px;
+        border-radius:12px 12px 0 0;
         cursor:pointer;
         transition:all 0.3s ease;
         position:relative;
+        font-weight:600;
+        white-space:nowrap;
+        font-size:14px;
       }
       
       .tab-btn.active{
         color:#ffffff;
-        background:rgba(123,104,238,0.1);
+        background:rgba(123,104,238,0.15);
       }
       
       .tab-btn.active::after{
@@ -549,8 +571,9 @@
         bottom:0;
         left:0;
         right:0;
-        height:2px;
+        height:3px;
         background:var(--accent1);
+        border-radius:3px 3px 0 0;
       }
       
       .tab-content{
@@ -561,29 +584,115 @@
       .tab-content.active{display:block}
       
       .install-step{
-        padding:12px 16px;
-        margin:8px 0;
-        border-radius:8px;
-        background:rgba(255,255,255,0.02);
-        border-left:3px solid var(--accent2);
+        padding:18px 20px;
+        margin:12px 0;
+        border-radius:12px;
+        background:rgba(255,255,255,0.025);
+        border-left:4px solid var(--accent2);
+        position:relative;
+        transition:all 0.3s ease;
+      }
+      
+      .install-step:hover{
+        background:rgba(255,255,255,0.04);
+        transform:translateX(3px);
+      }
+      
+      .install-step.warning{
+        background:var(--warning-bg);
+        border-left-color:var(--warning-border);
+        border:2px solid var(--warning-border);
+        border-left-width:4px;
+        box-shadow:0 0 20px rgba(255,193,7,0.1);
+      }
+      
+      .install-step.success{
+        background:var(--success-bg);
+        border-left-color:var(--success-border);
+        border:2px solid var(--success-border);
+        border-left-width:4px;
+        box-shadow:0 0 20px rgba(40,167,69,0.1);
+      }
+      
+      .install-step.info{
+        background:var(--info-bg);
+        border-left-color:var(--info-border);
+        border:2px solid var(--info-border);
+        border-left-width:4px;
+        box-shadow:0 0 20px rgba(23,162,184,0.1);
+      }
+      
+      .install-step.danger{
+        background:var(--danger-bg);
+        border-left-color:var(--danger-border);
+        border:2px solid var(--danger-border);
+        border-left-width:4px;
+        box-shadow:0 0 20px rgba(220,53,69,0.1);
       }
       
       .install-step h4{
-        margin:0 0 8px 0;
+        margin:0 0 12px 0;
         color:#ffffff;
+        font-size:16px;
+        font-weight:700;
+        display:flex;
+        align-items:center;
+        gap:8px;
       }
       
       .install-step p{
         margin:0;
         color:var(--muted);
         line-height:1.6;
+        font-size:14px;
       }
       
-      .warning{
-        background:rgba(255,193,7,0.1);
-        border-left-color:#ffc107;
-        color:#fff3cd;
+      .install-step .highlight{
+        background:rgba(123,104,238,0.2);
+        padding:2px 6px;
+        border-radius:6px;
+        color:#ffffff;
+        font-weight:600;
       }
+      
+      .install-step ul{
+        margin:8px 0 0 0;
+        padding-left:20px;
+      }
+      
+      .install-step li{
+        margin:4px 0;
+        color:var(--muted);
+        line-height:1.5;
+      }
+      
+      .install-step code{
+        background:rgba(0,0,0,0.3);
+        padding:2px 6px;
+        border-radius:4px;
+        font-family:'Monaco','Menlo','Consolas',monospace;
+        color:#6bd6ff;
+        font-size:13px;
+      }
+      
+      .step-icon{
+        width:20px;
+        height:20px;
+        border-radius:50%;
+        background:var(--accent1);
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        color:#071028;
+        font-weight:700;
+        font-size:12px;
+        margin-right:8px;
+      }
+      
+      .warning .step-icon{background:var(--warning-border);color:#000}
+      .success .step-icon{background:var(--success-border);color:#000}
+      .info .step-icon{background:var(--info-border);color:#000}
+      .danger .step-icon{background:var(--danger-border);color:#000}
 
       @keyframes fadeInDown{
         from{opacity:0;transform:translateY(-20px)}
@@ -621,21 +730,194 @@
       }
 
       @media (max-width:1000px){
-        main{grid-template-columns:1fr}
+        main{
+          grid-template-columns:1fr;
+          gap:24px;
+        }
+        .sidecard{
+          position:static;
+          order:-1;
+        }
         .cards{grid-template-columns:repeat(2,1fr)}
         .download-grid{grid-template-columns:1fr}
-        .sidecard{position:static}
       }
       
-      @media (max-width:680px){
-        .cards{grid-template-columns:1fr}
-        .brand h1{font-size:16px}
-        .logo{width:54px;height:54px}
-        .features{grid-template-columns:1fr}
+      @media (max-width:768px){
+        .wrap{
+          margin:24px auto;
+          padding:20px;
+        }
+        
+        header{
+          flex-direction:column;
+          gap:16px;
+          align-items:stretch;
+        }
+        
+        .brand{
+          justify-content:center;
+          text-align:center;
+        }
+        
+        nav{
+          margin-left:0;
+          justify-content:center;
+          flex-wrap:wrap;
+        }
+        
+        main{gap:20px}
+        
+        .hero{
+          padding:20px;
+          border-radius:14px;
+        }
+        
+        .headline{
+          font-size:24px;
+          text-align:center;
+        }
+        
+        .lead{
+          text-align:center;
+          font-size:15px;
+        }
+        
+        .cards{
+          grid-template-columns:1fr;
+          gap:12px;
+        }
+        
+        .features{
+          grid-template-columns:1fr;
+          gap:10px;
+        }
+        
         .credits-grid{grid-template-columns:1fr}
-        .modal-panel{margin:20px}
-        .install-tabs{flex-direction:column}
-        .tab-btn{border-radius:8px}
+        
+        .carousel{height:220px}
+        
+        .carousel-nav{
+          width:38px;
+          height:38px;
+          font-size:16px;
+        }
+        
+        .nav-left{left:8px}
+        .nav-right{right:8px}
+        
+        footer{
+          flex-direction:column;
+          gap:12px;
+          text-align:center;
+          padding:20px;
+        }
+      }
+      
+      @media (max-width:640px){
+        .wrap{padding:16px}
+        
+        .brand h1{font-size:18px}
+        .tag{font-size:12px}
+        .logo{width:56px;height:56px}
+        .logo svg{width:36px;height:36px}
+        
+        .headline{font-size:20px}
+        .lead{font-size:14px}
+        
+        .btn{
+          padding:8px 12px;
+          font-size:13px;
+        }
+        
+        .hero{padding:16px}
+        .sidecard{padding:16px}
+        .card{padding:14px}
+        .feature{padding:10px}
+        
+        .modal{padding:12px}
+        .modal-panel{
+          padding:20px;
+          border-radius:16px;
+          max-height:85vh;
+        }
+        
+        .modal-close{
+          top:16px;
+          right:20px;
+          font-size:24px;
+        }
+        
+        .install-modal .modal-panel{
+          max-width:none;
+          width:100%;
+        }
+        
+        .install-tabs{
+          margin-bottom:20px;
+          padding-bottom:0;
+        }
+        
+        .tab-btn{
+          padding:10px 14px;
+          font-size:13px;
+          border-radius:8px;
+        }
+        
+        .install-step{
+          padding:14px 16px;
+          margin:10px 0;
+          border-radius:10px;
+        }
+        
+        .install-step h4{
+          font-size:15px;
+          margin-bottom:10px;
+        }
+        
+        .install-step p{font-size:13px}
+        
+        .carousel{height:180px}
+        
+        .carousel-nav{
+          width:32px;
+          height:32px;
+          font-size:14px;
+        }
+        
+        .nav-left{left:6px}
+        .nav-right{right:6px}
+      }
+      
+      @media (max-width:480px){
+        .wrap{padding:12px}
+        
+        .headline{font-size:18px}
+        .lead{font-size:13px}
+        
+        .hero{padding:14px}
+        .sidecard{padding:14px}
+        
+        nav{gap:8px}
+        
+        .btn{
+          padding:7px 10px;
+          font-size:12px;
+        }
+        
+        .modal-panel{padding:16px}
+        
+        .install-step{
+          padding:12px 14px;
+          border-radius:8px;
+        }
+        
+        .install-step h4{font-size:14px}
+        .install-step p{font-size:12px}
+        
+        .tab-btn{
+          padding:8px 12px;
+          font-size:12px;
+        }
       }
 
       @media (prefers-reduced-motion:reduce){
@@ -707,7 +989,7 @@
 
           <div class="divider"></div>
 
-          <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
             <a class="btn" href="#download">Downloads</a>
             <a class="btn" href="https://t.me/OneAI_community" target="_blank">Telegram</a>
             <a class="btn" href="https://paypal.me/matteomeogrossi02" target="_blank">Donate</a>
@@ -788,7 +1070,7 @@
       <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="install-modal-title">
         <button class="modal-close" id="closeInstall">&times;</button>
         <h3 id="install-modal-title">Installation Guide</h3>
-        <p class="small">Choose your installation method below</p>
+        <p class="small">Choose your installation method below. Follow each step carefully.</p>
         
         <div class="install-tabs">
           <button class="tab-btn active" data-tab="stock">From Stock ROM</button>
@@ -797,99 +1079,170 @@
         </div>
         
         <div class="tab-content active" id="stock">
+          <div class="install-step danger">
+            <h4><span class="step-icon">⚠</span>Critical Warning</h4>
+            <p><strong>BACKUP YOUR DATA FIRST!</strong> This process will completely wipe your device. Make sure you have:</p>
+            <ul>
+              <li>Full device backup (photos, contacts, apps)</li>
+              <li>Your Google/Samsung account ready for restore</li>
+              <li>Important files saved to cloud or PC</li>
+            </ul>
+          </div>
+          
+          <div class="install-step info">
+            <h4><span class="step-icon">1</span>Prerequisites & Downloads</h4>
+            <p>Before starting, ensure you have these tools ready:</p>
+            <ul>
+              <li><span class="highlight">Unlocked bootloader</span> on your device</li>
+              <li><strong>Samsung Odin</strong> (latest version from developer)</li>
+              <li><strong>Samsung USB drivers</strong> installed on PC</li>
+              <li><strong>OneAI ROM</strong> for your exact device model</li>
+              <li>Quality USB-C cable (avoid cheap cables)</li>
+            </ul>
+          </div>
+          
+          <div class="install-step">
+            <h4><span class="step-icon">2</span>Prepare Your Device</h4>
+            <p>Set up your device for flashing:</p>
+            <ul>
+              <li>Go to <code>Settings → Developer Options</code></li>
+              <li>Enable <span class="highlight">USB Debugging</span></li>
+              <li>Enable <span class="highlight">OEM Unlocking</span></li>
+              <li>Power off your device completely</li>
+              <li>Boot into <strong>Download Mode</strong>: Hold <code>Volume Down + Volume Up + Power</code> while connecting USB cable</li>
+            </ul>
+          </div>
+          
           <div class="install-step warning">
-            <h4>⚠️ Important Warning</h4>
-            <p>Always backup your data before flashing. This process will wipe your device completely.</p>
+            <h4><span class="step-icon">3</span>Flash with Odin</h4>
+            <p><strong>IMPORTANT:</strong> Use CSC file, NOT HOME_CSC for clean installation!</p>
+            <ul>
+              <li>Open Odin as Administrator on your PC</li>
+              <li>Connect device (should show blue "Added" message)</li>
+              <li>Load OneAI files in correct slots:</li>
+              <ul>
+                <li><strong>AP:</strong> OneAI_AP_*.tar.md5</li>
+                <li><strong>BL:</strong> OneAI_BL_*.tar.md5</li>
+                <li><strong>CP:</strong> OneAI_CP_*.tar.md5</li>
+                <li><strong>CSC:</strong> OneAI_CSC_*.tar.md5 (NOT HOME_CSC!)</li>
+              </ul>
+              <li>Click <span class="highlight">Start</span> and wait (10-15 minutes)</li>
+              <li>Device will reboot automatically when done</li>
+            </ul>
           </div>
           
-          <div class="install-step">
-            <h4>1. Prerequisites</h4>
-            <p>• Ensure your bootloader is unlocked<br>
-            • Download Samsung Odin (latest version)<br>
-            • Install Samsung USB drivers<br>
-            • Download OneAI ROM for your device model</p>
-          </div>
-          
-          <div class="install-step">
-            <h4>2. Prepare Device</h4>
-            <p>• Enable Developer Options and USB Debugging<br>
-            • Power off your device<br>
-            • Boot into Download Mode (Volume Down + Volume Up + Power while connecting USB)</p>
-          </div>
-          
-          <div class="install-step">
-            <h4>3. Flash with Odin</h4>
-            <p>• Open Odin and connect your device<br>
-            • Load the OneAI files in appropriate slots (AP, BL, CP, CSC)<br>
-            • <strong>Use CSC file (NOT HOME_CSC)</strong><br>
-            • Click Start and wait for completion</p>
-          </div>
-          
-          <div class="install-step">
-            <h4>4. Format Data</h4>
-            <p>• Boot into TWRP recovery<br>
-            • Go to Wipe → Format Data<br>
-            • Type "yes" to confirm<br>
-            • Reboot system and enjoy OneAI!</p>
+          <div class="install-step success">
+            <h4><span class="step-icon">4</span>Format Data & First Boot</h4>
+            <p>Complete the installation:</p>
+            <ul>
+              <li>Device should boot to TWRP recovery automatically</li>
+              <li>Go to <strong>Wipe → Format Data</strong></li>
+              <li>Type <code>yes</code> to confirm data wipe</li>
+              <li>Select <strong>Reboot System</strong></li>
+              <li><strong>First boot takes 10-15 minutes</strong> - be patient!</li>
+              <li>Complete Android setup and enjoy OneAI!</li>
+            </ul>
           </div>
         </div>
         
         <div class="tab-content" id="custom">
           <div class="install-step warning">
-            <h4>⚠️ Important Warning</h4>
-            <p>Coming from other custom ROMs may require additional steps. Always backup first.</p>
+            <h4><span class="step-icon">⚠</span>Coming from Custom ROM</h4>
+            <p>Installing over other custom ROMs requires extra care. <strong>Clean installation is highly recommended</strong> to avoid conflicts and bootloops.</p>
+          </div>
+          
+          <div class="install-step danger">
+            <h4><span class="step-icon">1</span>Complete Wipe Required</h4>
+            <p>Unlike stock ROM, coming from custom ROM needs full cleanup:</p>
+            <ul>
+              <li>Boot into <strong>TWRP recovery</strong></li>
+              <li>Go to <strong>Wipe → Advanced Wipe</strong></li>
+              <li>Select: <code>System</code>, <code>Data</code>, <code>Cache</code>, <code>Dalvik/ART Cache</code></li>
+              <li>Swipe to wipe selected partitions</li>
+              <li>Go to <strong>Wipe → Format Data</strong></li>
+              <li>Type <code>yes</code> to confirm complete data format</li>
+            </ul>
           </div>
           
           <div class="install-step">
-            <h4>1. Clean Installation Recommended</h4>
-            <p>• Boot into TWRP recovery<br>
-            • Wipe System, Data, Cache, Dalvik<br>
-            • Format Data partition completely</p>
+            <h4><span class="step-icon">2</span>Flash OneAI ROM</h4>
+            <p>Now flash the ROM with Odin:</p>
+            <ul>
+              <li>Reboot to <strong>Download Mode</strong></li>
+              <li>Connect to PC and open Odin</li>
+              <li>Load OneAI ROM files in appropriate slots</li>
+              <li><strong>Use CSC file (NOT HOME_CSC)</strong> for clean install</li>
+              <li>Click Start and wait for completion</li>
+            </ul>
           </div>
           
-          <div class="install-step">
-            <h4>2. Flash OneAI</h4>
-            <p>• Reboot to Download Mode<br>
-            • Use Odin to flash OneAI ROM<br>
-            • <strong>Use CSC file (NOT HOME_CSC)</strong><br>
-            • Wait for completion</p>
-          </div>
-          
-          <div class="install-step">
-            <h4>3. Final Steps</h4>
-            <p>• Boot into TWRP and Format Data again if needed<br>
-            • Reboot system<br>
-            • First boot may take 10-15 minutes</p>
+          <div class="install-step success">
+            <h4><span class="step-icon">3</span>Final Steps</h4>
+            <p>Complete the installation:</p>
+            <ul>
+              <li>Device should boot to TWRP automatically</li>
+              <li>If you see any errors, <strong>Format Data</strong> again</li>
+              <li>Reboot System</li>
+              <li>First boot will take 10-15 minutes</li>
+              <li>If stuck on boot screen, boot back to TWRP and format data once more</li>
+            </ul>
           </div>
         </div>
         
         <div class="tab-content" id="older">
-          <div class="install-step">
-            <h4>1. Easy Update Process</h4>
-            <p>Updating from older OneAI versions is much simpler!</p>
+          <div class="install-step success">
+            <h4><span class="step-icon">✓</span>Easy Update Process</h4>
+            <p>Updating from older OneAI versions is much simpler! Your data and settings can be preserved in most cases.</p>
           </div>
           
           <div class="install-step">
-            <h4>2. Flash with Odin</h4>
-            <p>• Download the latest OneAI ROM<br>
-            • Boot into Download Mode<br>
-            • Use Odin to flash the ROM<br>
-            • <strong>Use HOME_CSC file this time</strong></p>
+            <h4><span class="step-icon">1</span>Download Latest ROM</h4>
+            <p>Get the newest OneAI version:</p>
+            <ul>
+              <li>Download the latest OneAI ROM for your device</li>
+              <li>Ensure it's the correct model (G991B, G996B, etc.)</li>
+              <li>Have Odin ready on your PC</li>
+            </ul>
           </div>
           
-          <div class="install-step">
-            <h4>3. Reboot and Enjoy</h4>
-            <p>• Simply reboot your device<br>
-            • Your data and settings will be preserved<br>
-            • If you encounter issues, Format Data in TWRP</p>
+          <div class="install-step info">
+            <h4><span class="step-icon">2</span>Flash Update</h4>
+            <p><strong>Key difference:</strong> Use HOME_CSC this time to preserve data!</p>
+            <ul>
+              <li>Boot into <strong>Download Mode</strong></li>
+              <li>Connect to PC and open Odin</li>
+              <li>Load ROM files in slots</li>
+              <li><strong>Use HOME_CSC file</strong> (not regular CSC)</li>
+              <li>This preserves your apps and data</li>
+              <li>Click Start and wait for completion</li>
+            </ul>
+          </div>
+          
+          <div class="install-step success">
+            <h4><span class="step-icon">3</span>Reboot and Enjoy</h4>
+            <p>Simple finish:</p>
+            <ul>
+              <li>Device will reboot automatically</li>
+              <li>Your apps and settings should be intact</li>
+              <li>OneAI will show new version in Settings</li>
+              <li>No setup required - you're done!</li>
+            </ul>
           </div>
           
           <div class="install-step warning">
-            <h4>🔧 Troubleshooting</h4>
-            <p>If you experience bootloops or issues after updating:<br>
-            • Boot into TWRP<br>
-            • Format Data (type "yes")<br>
-            • Reboot system</p>
+            <h4><span class="step-icon">🔧</span>Troubleshooting</h4>
+            <p>If you experience issues after updating:</p>
+            <ul>
+              <li><strong>Bootloop or won't start:</strong></li>
+              <ul>
+                <li>Boot into TWRP recovery</li>
+                <li>Go to <strong>Wipe → Format Data</strong></li>
+                <li>Type <code>yes</code> to confirm</li>
+                <li>Reboot system</li>
+              </ul>
+              <li><strong>Apps crashing:</strong> Clear cache in Settings → Storage</li>
+              <li><strong>Performance issues:</strong> Restart device and wait 24h for optimization</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -947,11 +1300,11 @@
           updateCarousel();
         }
 
-        open.addEventListener('click', () => showModal(modal));
-        open2.addEventListener('click', () => showModal(modal));
-        close.addEventListener('click', () => hideModal(modal));
-        installGuide.addEventListener('click', () => showModal(installModal));
-        closeInstall.addEventListener('click', () => hideModal(installModal));
+        if(open) open.addEventListener('click', () => showModal(modal));
+        if(open2) open2.addEventListener('click', () => showModal(modal));
+        if(close) close.addEventListener('click', () => hideModal(modal));
+        if(installGuide) installGuide.addEventListener('click', () => showModal(installModal));
+        if(closeInstall) closeInstall.addEventListener('click', () => hideModal(installModal));
         
         modal.addEventListener('click', (e) => {
           if(e.target === modal) hideModal(modal);
@@ -970,8 +1323,8 @@
           if(e.key === 'ArrowRight') nextSlide();
         });
 
-        prevBtn.addEventListener('click', prevSlide);
-        nextBtn.addEventListener('click', nextSlide);
+        if(prevBtn) prevBtn.addEventListener('click', prevSlide);
+        if(nextBtn) nextBtn.addEventListener('click', nextSlide);
         
         indicators.forEach((indicator, index) => {
           indicator.addEventListener('click', () => goToSlide(index));
@@ -988,42 +1341,45 @@
             tabContents.forEach(c => c.classList.remove('active'));
             
             btn.classList.add('active');
-            document.getElementById(targetTab).classList.add('active');
+            const targetContent = document.getElementById(targetTab);
+            if(targetContent) targetContent.classList.add('active');
           });
         });
 
         let autoSlide = setInterval(nextSlide, 5000);
         
         const carousel = document.querySelector('.carousel');
-        carousel.addEventListener('mouseenter', () => {
-          clearInterval(autoSlide);
-        });
-        
-        carousel.addEventListener('mouseleave', () => {
-          autoSlide = setInterval(nextSlide, 5000);
-        });
-
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        carousel.addEventListener('touchstart', (e) => {
-          touchStartX = e.changedTouches[0].screenX;
-        });
-        
-        carousel.addEventListener('touchend', (e) => {
-          touchEndX = e.changedTouches[0].screenX;
-          handleSwipe();
-        });
-        
-        function handleSwipe(){
-          const swipeThreshold = 50;
-          const diff = touchStartX - touchEndX;
+        if(carousel){
+          carousel.addEventListener('mouseenter', () => {
+            clearInterval(autoSlide);
+          });
           
-          if(Math.abs(diff) > swipeThreshold){
-            if(diff > 0){
-              nextSlide();
-            } else {
-              prevSlide();
+          carousel.addEventListener('mouseleave', () => {
+            autoSlide = setInterval(nextSlide, 5000);
+          });
+
+          let touchStartX = 0;
+          let touchEndX = 0;
+          
+          carousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+          }, {passive: true});
+          
+          carousel.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+          }, {passive: true});
+          
+          function handleSwipe(){
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if(Math.abs(diff) > swipeThreshold){
+              if(diff > 0){
+                nextSlide();
+              } else {
+                prevSlide();
+              }
             }
           }
         }
@@ -1054,6 +1410,15 @@
             }
           });
         });
+
+        // currently useless, ima add it later
+        /*const handleResize = () => {
+          if(window.innerWidth <= 768){
+          }
+        };*/
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
 
       })();
     </script>
