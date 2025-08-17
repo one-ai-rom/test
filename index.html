@@ -99,6 +99,7 @@
         overflow:hidden;
         font-size:14px;
         white-space:nowrap;
+        cursor: pointer;
       }
       
       .btn::before{
@@ -136,6 +137,18 @@
       .cta:hover{
         transform:translateY(-2px) scale(1.05);
         box-shadow:0 12px 30px rgba(123,104,238,0.4);
+      }
+
+      #installGuide {
+        background: var(--accent1);
+        color: #071028;
+        border: none;
+      }
+
+      #installGuide:hover {
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 12px 30px rgba(123, 104, 238, 0.4);
+        border-color: transparent;
       }
 
       main{
@@ -1411,8 +1424,8 @@
           }
         };*/
 
-        window.addEventListener('resize', handleResize);
-        handleResize();
+        // window.addEventListener('resize', handleResize);
+        // handleResize();
 
       })();
     </script>
