@@ -164,9 +164,38 @@
         padding:28px;
         border-radius:18px;
         background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-        border:1px solid rgba(255,255,255,0.03);
         backdrop-filter:blur(6px);
         transition:transform 0.3s ease,box-shadow 0.3s ease;
+        position:relative;
+        overflow:hidden;
+      }
+
+      .hero::before{
+        content:'';
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        border-radius:18px;
+        padding:3px;
+        background:linear-gradient(45deg, 
+          #7b68ee, 
+          #6bd6ff, 
+          #ff6b9d, 
+          #c96fff, 
+          #7b68ee, 
+          #6bd6ff, 
+          #ff6b9d, 
+          #c96fff
+        );
+        background-size:400% 400%;
+        mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite:xor;
+        -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite:xor;
+        animation:gradientShift 4s ease-in-out infinite;
+        z-index:-1;
       }
       
       .hero:hover{
@@ -208,32 +237,13 @@
       }
       
       .feature{
-        position:relative;
-        overflow:hidden;
-        z-index:1;
-        background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+        padding:12px;
+        border-radius:12px;
+        background:rgba(255,255,255,0.02);
         border:1px solid rgba(255,255,255,0.02);
         transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
-      }
-      .feature > * { position: relative; z-index: 2; }
-      .feature::after{
-        content: "";
-        position: absolute;
-        inset: -40%;
-        pointer-events: none;
-        border-radius: inherit;
-        background: linear-gradient(120deg,
-          rgba(123,104,238,0.30) 0%,
-          rgba(107,214,255,0.26) 25%,
-          rgba(255,107,157,0.20) 50%,
-          rgba(255,209,102,0.18) 75%,
-          rgba(114,240,162,0.14) 100%);
-        background-size: 200% 200%;
-        filter: blur(22px) saturate(1.05);
-        opacity: 0.30;
-        transform: translateZ(0);
-        animation: gradientMove 9s linear infinite;
-        mix-blend-mode: screen;
+        position:relative;
+        overflow:hidden;
       }
       
       .feature::before{
@@ -245,57 +255,12 @@
         height:2px;
         background:var(--accent1);
         transition:left 0.4s ease;
-        z-index:3;
       }
-      .feature:hover::before{ left:0 }
+      
       .feature:hover{
         transform:translateY(-3px);
         background:rgba(255,255,255,0.04);
-      }      .card:hover{
-        transform:translateY(-8px) scale(1.02);
-        box-shadow:0 18px 60px rgba(11,17,30,0.55);
-      }
-      
-      .feature:hover::after{
-        opacity: 0.55;
-        filter: blur(18px) saturate(1.12);
-        animation-duration: 5.5s;
-      }
-      @keyframes gradientMove{
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
-      @media (prefers-reduced-motion: reduce){
-        .feature::after,
-        .feature:hover::after{
-          animation: none !important;
-          transition: none !important;
-        }
-      }
-      .hero{
-        padding:28px;
-        border-radius:18px;
-        background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-        backdrop-filter:blur(6px);
-        transition:transform 0.3s ease,box-shadow 0.3s ease;
-        position:relative;
-        overflow:hidden;
-      }
-      .hero::before{
-        content:'';
-        position:absolute;
-        inset:-2px;
-        padding:2px;
-        background:linear-gradient(45deg, #7b68ee, #6bd6ff, #ff6b9d, #c471ed, #7b68ee);
-        background-size:300% 300%;
-        border-radius:20px;
-        mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        mask-composite:exclude;
-        -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite:xor;
-        animation:gradientShift 4s ease-in-out infinite;
-        z-index:-1;
+        border-color:rgba(123,104,238,0.2);
       }
       
       .feature:hover::before{left:0}
@@ -804,6 +769,14 @@
       @keyframes pulse{
         0%,100%{transform:scale(1);opacity:1}
         50%{transform:scale(1.05);opacity:0.9}
+      }
+
+      @keyframes gradientShift{
+        0%{background-position:0% 50%}
+        25%{background-position:100% 50%}
+        50%{background-position:100% 100%}
+        75%{background-position:0% 100%}
+        100%{background-position:0% 50%}
       }
 
       @media (max-width:1000px){
