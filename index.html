@@ -231,7 +231,32 @@
       .feature:hover{
         transform:translateY(-3px);
         background:rgba(255,255,255,0.04);
-        border-color:rgba(123,104,238,0.2);
+      }      .card:hover{
+        transform:translateY(-8px) scale(1.02);
+        box-shadow:0 18px 60px rgba(11,17,30,0.55);
+      }      .hero{
+        padding:28px;
+        border-radius:18px;
+        background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+        backdrop-filter:blur(6px);
+        transition:transform 0.3s ease,box-shadow 0.3s ease;
+        position:relative;
+        overflow:hidden;
+      }
+      .hero::before{
+        content:'';
+        position:absolute;
+        inset:-2px;
+        padding:2px;
+        background:linear-gradient(45deg, #7b68ee, #6bd6ff, #ff6b9d, #c471ed, #7b68ee);
+        background-size:300% 300%;
+        border-radius:20px;
+        mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite:exclude;
+        -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite:xor;
+        animation:gradientShift 4s ease-in-out infinite;
+        z-index:-1;
       }
       
       .feature:hover::before{left:0}
