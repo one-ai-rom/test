@@ -472,9 +472,56 @@
         animation:fadeIn 0.8s ease-out 0.9s both;
       }
 
-      section.credits{
-        margin-top:18px;
+      /* Credits Section Styling */
+      .credits{
+        margin-top:28px;
+        padding:28px;
+        border-radius:18px;
+        background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+        backdrop-filter:blur(6px);
+        transition:transform 0.3s ease,box-shadow 0.3s ease;
+        position:relative;
+        overflow:hidden;
         animation:fadeInUp 0.8s ease-out 1s both;
+      }
+
+      .credits::before{
+        content:'';
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        border-radius:18px;
+        padding:3px;
+        background:linear-gradient(45deg, 
+          #7b68ee, 
+          #6bd6ff, 
+          #ff6b9d, 
+          #c96fff, 
+          #7b68ee, 
+          #6bd6ff, 
+          #ff6b9d, 
+          #c96fff
+        );
+        background-size:400% 400%;
+        mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite:xor;
+        -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite:xor;
+        animation:gradientShift 4s ease-in-out infinite;
+        z-index:-1;
+      }
+      
+      .credits:hover{
+        transform:translateY(-2px);
+        box-shadow:0 20px 60px rgba(123,104,238,0.1);
+      }
+
+      .credits h3{
+        margin:0 0 18px 0;
+        font-size:20px;
+        color:#eaf2ff;
       }
       
       .credits-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
@@ -784,10 +831,12 @@
           grid-template-columns:1fr;
           gap:24px;
         }
-        .sidecard{
-          position:static;
-          order:-1;
-        }
+        
+        /* mobile layout order (based on wat matteo wants): Features > Screenshots > Downloads > Credits */
+        .hero{order:1}
+        .sidecard{order:2;position:static}
+        .credits{order:3}
+        
         .cards{grid-template-columns:repeat(2,1fr)}
         .download-grid{grid-template-columns:1fr}
       }
@@ -849,6 +898,11 @@
           gap:10px;
         }
         
+        .credits{
+          padding:20px;
+          border-radius:14px;
+        }
+        
         .credits-grid{grid-template-columns:1fr}
         
         .carousel{height:220px}
@@ -888,6 +942,7 @@
         
         .hero{padding:16px}
         .sidecard{padding:16px}
+        .credits{padding:16px}
         .card{padding:14px}
         .feature{padding:10px}
         
@@ -953,6 +1008,7 @@
         
         .hero{padding:14px}
         .sidecard{padding:14px}
+        .credits{padding:14px}
         
         nav{gap:8px}
         
@@ -1044,17 +1100,6 @@
               <p>Join Telegram for discussion, help and further updates.</p>
             </div>
           </div>
-
-          <section class="credits" aria-labelledby="credits-heading">
-            <div class="divider"></div>
-            <h3 id="credits-heading" style="margin-top:18px">Credits</h3>
-            <div class="credits-grid">
-              <div class="person"><strong>MatteoMeo</strong><div class="small">Main developer — ROM, optimizations, fixes</div></div>
-              <div class="person"><strong>Fwp</strong><div class="small">Testing and kernel work</div></div>
-              <div class="person"><strong>Devcore</strong><div class="small">Ports and major contributions</div></div>
-              <div class="person"><strong>Kusoi</strong><div class="small">Website & deployment</div></div>
-            </div>
-          </section>
         </section>
 
         <aside class="sidecard">
@@ -1096,6 +1141,16 @@
             </div>
           </div>
         </aside>
+
+        <section class="credits" aria-labelledby="credits-heading">
+          <h3 id="credits-heading">Credits</h3>
+          <div class="credits-grid">
+            <div class="person"><strong>MatteoMeo</strong><div class="small">Main developer — ROM, optimizations, fixes</div></div>
+            <div class="person"><strong>Fwp</strong><div class="small">Testing and kernel work</div></div>
+            <div class="person"><strong>Devcore</strong><div class="small">Ports and major contributions</div></div>
+            <div class="person"><strong>Kusoi</strong><div class="small">Website & deployment</div></div>
+          </div>
+        </section>
       </main>
 
       <footer>
