@@ -60,7 +60,7 @@
       .logo{
         width:160px;
         height:160px;
-        border-radius:32x;
+        border-radius:32px;
         display:grid;
         place-items:center;
         background:linear-gradient(180deg,#111827, rgba(255,255,255,0.02));
@@ -356,7 +356,8 @@
         overflow:hidden;
         border-radius:12px;
         background:#071226;
-        height:260px;
+        min-height:200px;
+        transition:height 0.6s cubic-bezier(0.4,0,0.2,1);
       }
       
       .carousel-track{
@@ -373,10 +374,13 @@
       }
       
       .carousel-slide img{
-        width:100%;
-        height:100%;
+        max-width:100%;
+        max-height:100%;
+        width:auto;
+        height:auto;
         object-fit:contain;
         transition:transform 0.3s ease;
+        border-radius:8px;
       }
       
       .carousel-slide img:hover{transform:scale(1.05)}
@@ -398,6 +402,11 @@
         transition:all 0.3s ease;
         font-size:18px;
         z-index:10;
+        opacity:0;
+      }
+      
+      .carousel:hover .carousel-nav{
+        opacity:1;
       }
       
       .carousel-nav:hover{
@@ -933,7 +942,7 @@
         
         .credits-grid{grid-template-columns:1fr}
         
-        .carousel{height:220px}
+        .carousel{min-height:180px}
         
         .carousel-nav{
           width:38px;
@@ -1018,7 +1027,7 @@
         
         .install-step p{font-size:13px}
         
-        .carousel{height:180px}
+        .carousel{min-height:150px}
         
         .carousel-nav{
           width:32px;
@@ -1072,6 +1081,8 @@
           width:28px;
           height:28px;
         }
+        
+        .carousel{min-height:120px}
       }
 
       @media (prefers-reduced-motion:reduce){
@@ -1153,22 +1164,16 @@
           </div>
 
           <div class="preview">
-            <div class="carousel">
+            <div class="carousel" id="carousel">
               <div class="carousel-track" id="carouselTrack">
-                <div class="carousel-slide">
-                  <img src="https://cdn.glitch.global/1e6faa76-7ca0-4a7b-ade4-b55b7baff893/Screenshot_20250525_012317_Settings.webp?v=1748179229509" alt="OneAI Settings Screenshot" />
-                </div>
-                <div class="carousel-slide">
-                  <img src="https://i.imgur.com/zGXOCSY.png" alt="OneAI Logo" />
-                </div>
+                <!-- Images will be dynamically inserted here -->
               </div>
               
               <button class="carousel-nav nav-left" id="prevBtn">‹</button>
               <button class="carousel-nav nav-right" id="nextBtn">›</button>
               
               <div class="indicators" id="indicators">
-                <div class="dot active" data-slide="0"></div>
-                <div class="dot" data-slide="1"></div>
+                <!-- Dots will be dynamically created here -->
               </div>
             </div>
             
@@ -1394,172 +1399,212 @@
       </div>
     </div>
 
-    <script>
-      (function(){
-        const modal = document.getElementById('modal');
-        const installModal = document.getElementById('installModal');
-        const open = document.getElementById('openModal');
-        const open2 = document.getElementById('openModal2');
-        const close = document.getElementById('close');
-        const closeDownload = document.getElementById('closeDownload');
-        const installGuide = document.getElementById('installGuide');
-        const closeInstall = document.getElementById('closeInstall');
-        
-        const carouselTrack = document.getElementById('carouselTrack');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const indicators = document.querySelectorAll('.dot');
-        
-        let currentSlide = 0;
-        const totalSlides = 2;
+<script>
+(function(){
+  const carouselImages = [
+    {
+      src: 'https://cdn.glitch.global/1e6faa76-7ca0-4a7b-ade4-b55b7baff893/Screenshot_20250525_012317_Settings.webp?v=1748179229509',
+      alt: 'OneAI Settings Screenshot'
+    },
+    {
+      src: 'https://i.imgur.com/zGXOCSY.png',
+      alt: 'OneAI Logo'
+    },
+  ];
 
-        function showModal(modalElement){
-          modalElement.classList.add('show');
-          document.body.style.overflow = 'hidden';
-        }
-        
-        function hideModal(modalElement){
-          modalElement.classList.remove('show');
-          document.body.style.overflow = '';
-        }
+  const modal = document.getElementById('modal');
+  const installModal = document.getElementById('installModal');
+  const open = document.getElementById('openModal');
+  const open2 = document.getElementById('openModal2');
+  const close = document.getElementById('close');
+  const closeDownload = document.getElementById('closeDownload');
+  const installGuide = document.getElementById('installGuide');
+  const closeInstall = document.getElementById('closeInstall');
 
-        function updateCarousel(){
-          const translateX = -currentSlide * 100;
-          carouselTrack.style.transform = `translateX(${translateX}%)`;
-          
-          indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentSlide);
-          });
-        }
-        
-        function nextSlide(){
-          currentSlide = (currentSlide + 1) % totalSlides;
-          updateCarousel();
-        }
-        
-        function prevSlide(){
-          currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-          updateCarousel();
-        }
-        
-        function goToSlide(slideIndex){
-          currentSlide = slideIndex;
-          updateCarousel();
-        }
+  const carousel = document.getElementById('carousel');
+  const carouselTrack = document.getElementById('carouselTrack');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const indicatorsContainer = document.getElementById('indicators');
 
-        if(open) open.addEventListener('click', () => showModal(modal));
-        if(open2) open2.addEventListener('click', () => showModal(modal));
-        if(close) close.addEventListener('click', () => hideModal(modal));
-        if(closeDownload) closeDownload.addEventListener('click', () => hideModal(modal));
-        if(installGuide) installGuide.addEventListener('click', () => showModal(installModal));
-        if(closeInstall) closeInstall.addEventListener('click', () => hideModal(installModal));
-        
-        modal.addEventListener('click', (e) => {
-          if(e.target === modal) hideModal(modal);
-        });
-        
-        installModal.addEventListener('click', (e) => {
-          if(e.target === installModal) hideModal(installModal);
-        });
-        
-        document.addEventListener('keydown', (e) => {
-          if(e.key === 'Escape'){
-            if(modal.classList.contains('show')) hideModal(modal);
-            if(installModal.classList.contains('show')) hideModal(installModal);
-          }
-          if(e.key === 'ArrowLeft') prevSlide();
-          if(e.key === 'ArrowRight') nextSlide();
-        });
+  let currentSlide = 0;
+  let totalSlides = carouselImages.length;
+  let indicators = [];
+  let autoSlideInterval;
 
-        if(prevBtn) prevBtn.addEventListener('click', prevSlide);
-        if(nextBtn) nextBtn.addEventListener('click', nextSlide);
-        
-        indicators.forEach((indicator, index) => {
-          indicator.addEventListener('click', () => goToSlide(index));
-        });
+  function initializeCarousel() {
+    carouselTrack.innerHTML = '';
+    indicatorsContainer.innerHTML = '';
+    indicators = [];
 
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-        
-        tabBtns.forEach(btn => {
-          btn.addEventListener('click', () => {
-            const targetTab = btn.dataset.tab;
-            
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-            
-            btn.classList.add('active');
-            const targetContent = document.getElementById(targetTab);
-            if(targetContent) targetContent.classList.add('active');
-          });
-        });
+    carouselImages.forEach((imageData, index) => {
+      const slide = document.createElement('div');
+      slide.className = 'carousel-slide';
 
-        let autoSlide = setInterval(nextSlide, 5000);
-        
-        const carousel = document.querySelector('.carousel');
-        if(carousel){
-          carousel.addEventListener('mouseenter', () => {
-            clearInterval(autoSlide);
-          });
-          
-          carousel.addEventListener('mouseleave', () => {
-            autoSlide = setInterval(nextSlide, 5000);
-          });
+      const img = document.createElement('img');
+      img.src = imageData.src;
+      img.alt = imageData.alt;
+      img.loading = 'lazy';
 
-          let touchStartX = 0;
-          let touchEndX = 0;
-          
-          carousel.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-          }, {passive: true});
-          
-          carousel.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-          }, {passive: true});
-          
-          function handleSwipe(){
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
-            
-            if(Math.abs(diff) > swipeThreshold){
-              if(diff > 0){
-                nextSlide();
-              } else {
-                prevSlide();
-              }
-            }
-          }
-        }
+      img.onload = function() {
+        adjustCarouselHeight();
+      };
 
-        const observerOptions = {
-          threshold: 0.1,
-          rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if(entry.isIntersecting){
-              entry.target.style.animationDelay = `${Math.random() * 0.2}s`;
-              entry.target.classList.add('animate');
-            }
-          });
-        }, observerOptions);
-        
-        document.querySelectorAll('.feature, .card, .person').forEach(el => {
-          observer.observe(el);
-        });
+      slide.appendChild(img);
+      carouselTrack.appendChild(slide);
 
-        document.querySelectorAll('.btn').forEach(el => {
-          el.addEventListener('keydown', e => {
-            if(e.key === 'Enter' || e.key === ' '){
-              e.preventDefault();
-              e.target.click();
-            }
-          });
-        });
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      if (index === 0) dot.classList.add('active');
+      dot.dataset.slide = index;
+      dot.addEventListener('click', () => goToSlide(index));
 
-      })();
-    </script>
-  </body>
-</html>
+      indicatorsContainer.appendChild(dot);
+      indicators.push(dot);
+    });
+
+    totalSlides = carouselImages.length;
+
+    if (totalSlides <= 1) {
+      if (prevBtn) prevBtn.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'none';
+      indicatorsContainer.style.display = 'none';
+    } else {
+      if (prevBtn) prevBtn.style.display = 'grid';
+      if (nextBtn) nextBtn.style.display = 'grid';
+      indicatorsContainer.style.display = 'flex';
+    }
+
+    adjustCarouselHeight();
+  }
+
+  function adjustCarouselHeight() {
+    if (!carousel || totalSlides === 0) return;
+
+    const currentSlideElement = carouselTrack.children[currentSlide];
+    if (!currentSlideElement) return;
+
+    const currentImg = currentSlideElement.querySelector('img');
+    if (!currentImg) return;
+
+    if (!currentImg.complete) {
+      currentImg.onload = adjustCarouselHeight;
+      return;
+    }
+
+    const containerWidth = carousel.offsetWidth || document.body.clientWidth;
+    const imageAspectRatio = currentImg.naturalWidth / currentImg.naturalHeight || 1;
+
+    let optimalHeight = Math.min(containerWidth / imageAspectRatio, 500);
+
+    optimalHeight = Math.max(optimalHeight, 200);
+
+    carousel.style.height = optimalHeight + 'px';
+  }
+
+  function showModal(modalElement){
+    if(!modalElement) return;
+    modalElement.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function hideModal(modalElement){
+    if(!modalElement) return;
+    modalElement.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  function updateCarousel(){
+    if (totalSlides === 0) return;
+
+    const translateX = -currentSlide * 100;
+    carouselTrack.style.transform = `translateX(${translateX}%)`;
+
+    indicators.forEach((indicator, index) => {
+      indicator.classList.toggle('active', index === currentSlide);
+    });
+
+    setTimeout(adjustCarouselHeight, 100);
+  }
+
+  function nextSlide(){
+    if (totalSlides <= 1) return;
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateCarousel();
+  }
+
+  function prevSlide(){
+    if (totalSlides <= 1) return;
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateCarousel();
+  }
+
+  function goToSlide(slideIndex){
+    if (slideIndex < 0 || slideIndex >= totalSlides) return;
+    currentSlide = slideIndex;
+    updateCarousel();
+  }
+
+  function startAutoSlide() {
+    if (totalSlides <= 1) return;
+    stopAutoSlide();
+    autoSlideInterval = setInterval(nextSlide, 5000);
+  }
+
+  function stopAutoSlide() {
+    if (autoSlideInterval) {
+      clearInterval(autoSlideInterval);
+      autoSlideInterval = null;
+    }
+  }
+
+  if(open) open.addEventListener('click', () => showModal(modal));
+  if(open2) open2.addEventListener('click', () => showModal(modal));
+  if(close) close.addEventListener('click', () => hideModal(modal));
+  if(closeDownload) closeDownload.addEventListener('click', () => hideModal(modal));
+  if(installGuide) installGuide.addEventListener('click', () => showModal(installModal));
+  if(closeInstall) closeInstall.addEventListener('click', () => hideModal(installModal));
+
+  if(modal){
+    modal.addEventListener('click', (e) => {
+      if(e.target === modal) hideModal(modal);
+    });
+  }
+
+  if(installModal){
+    installModal.addEventListener('click', (e) => {
+      if(e.target === installModal) hideModal(installModal);
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape'){
+      if(modal && modal.classList.contains('show')) hideModal(modal);
+      if(installModal && installModal.classList.contains('show')) hideModal(installModal);
+    }
+    if(e.key === 'ArrowLeft') prevSlide();
+    if(e.key === 'ArrowRight') nextSlide();
+  });
+
+  if(prevBtn) prevBtn.addEventListener('click', prevSlide);
+  if(nextBtn) nextBtn.addEventListener('click', nextSlide);
+
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.dataset.tab;
+
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+
+      btn.classList.add('active');
+      const targetContent = document.getElementById(targetTab);
+      if(targetContent) targetContent.classList.add('active');
+    });
+  });
+  initializeCarousel();
+  startAutoSlide();
+})();
+</script>
