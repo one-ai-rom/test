@@ -1406,30 +1406,12 @@
 <script>
 (function(){
   const carouselImages = [
-    {
-      src: 'https://i.imgur.com/xymeNw6.jpeg',
-      alt: 'OneAI Settings Screenshot'
-    },
-    {
-      src: 'https://i.imgur.com/utXiMyt.jpeg',
-      alt: 'OneAI Logo'
-    },
-    {
-      src: 'https://i.imgur.com/g0J8vV3.jpeg',
-      alt: 'OneAI Logo'
-    },
-    {
-      src: 'https://i.imgur.com/1XXnpdk.jpeg',
-      alt: 'OneAI Logo'
-    },
-    {
-      src: 'https://i.imgur.com/ungWGYR.jpeg',
-      alt: 'OneAI Logo'
-    },
-    {
-      src: 'https://i.imgur.com/McEPGiA.jpeg',
-      alt: 'OneAI Logo'
-    },
+    { src: 'https://i.imgur.com/g0J8vV3.jpeg', alt: 'OneAI Logo' },
+    { src: 'https://i.imgur.com/utXiMyt.jpeg', alt: 'OneAI Logo' },
+    { src: 'https://i.imgur.com/xymeNw6.jpeg', alt: 'OneAI Settings Screenshot' },
+    { src: 'https://i.imgur.com/1XXnpdk.jpeg', alt: 'OneAI Logo' },
+    { src: 'https://i.imgur.com/ungWGYR.jpeg', alt: 'OneAI Logo' },
+    { src: 'https://i.imgur.com/McEPGiA.jpeg', alt: 'OneAI Logo' },
   ];
 
   const modal = document.getElementById('modal');
@@ -1451,24 +1433,34 @@
   let totalSlides = carouselImages.length;
   let indicators = [];
   let autoSlideInterval;
+  let loadedCount = 0;
 
   function initializeCarousel() {
     carouselTrack.innerHTML = '';
     indicatorsContainer.innerHTML = '';
     indicators = [];
+    loadedCount = 0;
 
     carouselImages.forEach((imageData, index) => {
       const slide = document.createElement('div');
       slide.className = 'carousel-slide';
 
       const img = document.createElement('img');
-      img.src = imageData.src;
-      img.alt = imageData.alt;
+      img.alt = imageData.alt || '';
       img.loading = 'lazy';
 
-      img.onload = function() {
-        adjustCarouselHeight();
-      };
+      img.addEventListener('load', () => {
+        loadedCount++;
+        if (index === currentSlide) {
+          requestAnimationFrame(() => adjustCarouselHeight());
+        }
+      });
+
+      img.addEventListener('error', () => {
+        img.src = 'https://via.placeholder.com/800x450?text=Preview+unavailable';
+      });
+
+      img.src = imageData.src;
 
       slide.appendChild(img);
       carouselTrack.appendChild(slide);
@@ -1507,31 +1499,20 @@
     const currentImg = currentSlideElement.querySelector('img');
     if (!currentImg) return;
 
-    if (!currentImg.complete) {
-      currentImg.onload = adjustCarouselHeight;
+    if (!currentImg.naturalWidth || !currentImg.naturalHeight) {
       return;
     }
 
-    const containerWidth = carousel.offsetWidth || document.body.clientWidth;
-    const imageAspectRatio = currentImg.naturalWidth / currentImg.naturalHeight || 1;
+    const containerWidth = carousel.clientWidth || document.body.clientWidth;
+    const aspectRatio = (currentImg.naturalWidth / currentImg.naturalHeight) || 1;
 
-    let optimalHeight = Math.min(containerWidth / imageAspectRatio, 500);
+    let idealHeight = containerWidth / aspectRatio;
 
-    optimalHeight = Math.max(optimalHeight, 200);
+    const maxByViewport = Math.max(240, Math.floor(window.innerHeight * 0.65));
+    const maxAllowed = Math.min(700, maxByViewport);
+    idealHeight = Math.max(200, Math.min(idealHeight, maxAllowed));
 
-    carousel.style.height = optimalHeight + 'px';
-  }
-
-  function showModal(modalElement){
-    if(!modalElement) return;
-    modalElement.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function hideModal(modalElement){
-    if(!modalElement) return;
-    modalElement.classList.remove('show');
-    document.body.style.overflow = '';
+    carousel.style.height = Math.round(idealHeight) + 'px';
   }
 
   function updateCarousel(){
@@ -1544,7 +1525,9 @@
       indicator.classList.toggle('active', index === currentSlide);
     });
 
-    setTimeout(adjustCarouselHeight, 100);
+    setTimeout(() => {
+      adjustCarouselHeight();
+    }, 60);
   }
 
   function nextSlide(){
@@ -1586,15 +1569,11 @@
   if(closeInstall) closeInstall.addEventListener('click', () => hideModal(installModal));
 
   if(modal){
-    modal.addEventListener('click', (e) => {
-      if(e.target === modal) hideModal(modal);
-    });
+    modal.addEventListener('click', (e) => { if(e.target === modal) hideModal(modal); });
   }
 
   if(installModal){
-    installModal.addEventListener('click', (e) => {
-      if(e.target === installModal) hideModal(installModal);
-    });
+    installModal.addEventListener('click', (e) => { if(e.target === installModal) hideModal(installModal); });
   }
 
   document.addEventListener('keydown', (e) => {
@@ -1615,17 +1594,26 @@
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetTab = btn.dataset.tab;
-
       tabBtns.forEach(b => b.classList.remove('active'));
       tabContents.forEach(c => c.classList.remove('active'));
-
       btn.classList.add('active');
       const targetContent = document.getElementById(targetTab);
       if(targetContent) targetContent.classList.add('active');
     });
   });
+
+  if (typeof ResizeObserver !== 'undefined' && carousel) {
+    new ResizeObserver(() => {
+      adjustCarouselHeight();
+    }).observe(carousel);
+  } else {
+    window.addEventListener('resize', () => adjustCarouselHeight());
+  }
+
   initializeCarousel();
   startAutoSlide();
+
+  window.__oneai_carousel = { adjustCarouselHeight, nextSlide, prevSlide, goToSlide };
 })();
 </script>
 <script>
