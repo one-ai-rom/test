@@ -287,9 +287,15 @@
       .feature:hover h3{color:#ffffff}
       .feature:hover p{color:#b8c9e0}
 
-      .sidecard{
+      .sidebar{
+        display:flex;
+        flex-direction:column;
+        gap:20px;
         position:sticky;
         top:28px;
+      }
+
+      .sidecard{
         padding:20px;
         border-radius:16px;
         background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
@@ -502,15 +508,15 @@
       }
 
       .credits{
-        margin-top:28px;
-        padding:28px;
-        border-radius:18px;
+        padding:16px;
+        border-radius:16px;
         background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+        border:1px solid rgba(255,255,255,0.03);
         backdrop-filter:blur(6px);
         transition:transform 0.3s ease,box-shadow 0.3s ease;
         position:relative;
         overflow:hidden;
-        animation:fadeInUp 0.8s ease-out 1s both;
+        animation:fadeInLeft 0.8s ease-out 0.6s both;
       }
 
       .credits::before{
@@ -520,8 +526,8 @@
         left:0;
         right:0;
         bottom:0;
-        border-radius:18px;
-        padding:3px;
+        border-radius:16px;
+        padding:2px;
         background:linear-gradient(45deg, 
           #7b68ee, 
           #6bd6ff, 
@@ -546,26 +552,41 @@
         box-shadow:0 20px 60px rgba(123,104,238,0.1);
       }
 
-      .credits h3{
-        margin:0 0 18px 0;
-        font-size:20px;
+      .credits h4{
+        margin:0 0 12px 0;
+        font-size:16px;
         color:#eaf2ff;
       }
       
-      .credits-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+      .credits-grid{
+        display:grid;
+        grid-template-columns:1fr;
+        gap:8px;
+      }
       
       .person{
-        padding:12px;
-        border-radius:10px;
+        padding:8px;
+        border-radius:8px;
         background:rgba(255,255,255,0.01);
         border:1px solid rgba(255,255,255,0.02);
         transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
       }
       
       .person:hover{
-        transform:translateY(-2px);
+        transform:translateY(-1px);
         background:rgba(255,255,255,0.03);
         border-color:rgba(123,104,238,0.2);
+      }
+
+      .person strong{
+        font-size:13px;
+        color:#dce9ff;
+      }
+
+      .person .small{
+        font-size:11px;
+        color:var(--muted);
+        margin-top:2px;
       }
 
       footer{
@@ -867,12 +888,24 @@
           gap:24px;
         }
         
-        /* mobile layout order: Features > Screenshots > Downloads > Credits */
-        .hero{order:1}
-        .sidecard{order:2;position:static}
-        .credits{order:3}
+        .sidebar{
+          position:static;
+          flex-direction:row;
+          gap:20px;
+          overflow-x:auto;
+        }
+        
+        .sidebar .sidecard{
+          min-width:300px;
+          flex:0 0 auto;
+        }
+        
+        .sidebar .credits{
+          min-width:280px;
+          flex:0 0 auto;
+        }
+        
         .cards{grid-template-columns:repeat(2,1fr)}
-        .download-grid{grid-template-columns:1fr}
       }
       
       @media (max-width:768px){
@@ -930,6 +963,16 @@
           font-size:15px;
         }
         
+        .sidebar{
+          flex-direction:column;
+          gap:16px;
+        }
+        
+        .sidebar .sidecard,
+        .sidebar .credits{
+          min-width:auto;
+        }
+        
         .cards{
           grid-template-columns:1fr;
           gap:12px;
@@ -939,13 +982,6 @@
           grid-template-columns:1fr;
           gap:10px;
         }
-        
-        .credits{
-          padding:20px;
-          border-radius:14px;
-        }
-        
-        .credits-grid{grid-template-columns:1fr}
         
         .carousel{min-height:180px}
         
@@ -984,7 +1020,7 @@
         
         .hero{padding:16px}
         .sidecard{padding:16px}
-        .credits{padding:16px}
+        .credits{padding:12px}
         .card{padding:14px}
         .feature{padding:10px}
         
@@ -1052,7 +1088,7 @@
         
         .hero{padding:14px}
         .sidecard{padding:14px}
-        .credits{padding:14px}
+        .credits{padding:10px}
         
         nav{gap:8px}
         
@@ -1096,6 +1132,9 @@
 
       a,button{appearance:none;border:0}
       .focus{box-shadow:0 0 0 4px rgba(123,104,238,0.12);border-radius:10px}
+
+      .modal.show{visibility:visible;opacity:1}
+      .modal.show .modal-panel{transform:scale(1) translateY(0)}
     </style>
   </head>
   <body>
@@ -1159,49 +1198,50 @@
           </div>
         </section>
 
-        <aside class="sidecard" id="download">
-          <h4>Downloads</h4>
-          <div class="download-grid">
-            <div class="download-item"><strong>S21 (G991B)</strong><span class="small"><a href="https://drive.google.com/file/d/1Vkm9E1FuSlBLzDD8pAsE7DEcOKCqmFK1/view?usp=drivesdk" class="btn">Direct</a></span></div>
-            <div class="download-item"><strong>S21+ (G996B)</strong><span class="small"><a href="https://drive.google.com/file/d/1k7Sfa39dyX5UTK2VDiMx_jHdod0YlTaZ/view?usp=drivesdk" class="btn">Direct</a></span></div>
-            <div class="download-item"><strong>S21U (G998B/N)</strong><span class="small"><button class="btn" id="openModal2">Choose</button></span></div>
-            <div class="download-item"><strong>S21 FE (G990E)</strong><span class="small"><a href="https://drive.google.com/file/d/1FFyO1MH6oosdUG4XGWGOfsMzAhsDr1wL/view?usp=drivesdk" class="btn">Direct</a></span></div>
-          </div>
-
-          <div class="preview">
-            <div class="carousel" id="carousel">
-              <div class="carousel-track" id="carouselTrack">
-                <!-- Images will be dynamically inserted here -->
-              </div>
-              
-              <button class="carousel-nav nav-left" id="prevBtn">‹</button>
-              <button class="carousel-nav nav-right" id="nextBtn">›</button>
-              
-              <div class="indicators" id="indicators">
-              </div>
+        <div class="sidebar">
+          <aside class="sidecard" id="download">
+            <h4>Downloads</h4>
+            <div class="download-grid">
+              <div class="download-item"><strong>S21 (G991B)</strong><span class="small"><a href="https://drive.google.com/file/d/1Vkm9E1FuSlBLzDD8pAsE7DEcOKCqmFK1/view?usp=drivesdk" class="btn">Direct</a></span></div>
+              <div class="download-item"><strong>S21+ (G996B)</strong><span class="small"><a href="https://drive.google.com/file/d/1k7Sfa39dyX5UTK2VDiMx_jHdod0YlTaZ/view?usp=drivesdk" class="btn">Direct</a></span></div>
+              <div class="download-item"><strong>S21U (G998B/N)</strong><span class="small"><button class="btn" id="openModal2">Choose</button></span></div>
+              <div class="download-item"><strong>S21 FE (G990E)</strong><span class="small"><a href="https://drive.google.com/file/d/1FFyO1MH6oosdUG4XGWGOfsMzAhsDr1wL/view?usp=drivesdk" class="btn">Direct</a></span></div>
             </div>
-            
-            <div style="padding:10px 12px">
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <div>
-                  <strong>Preview</strong>
-                  <div class="small">Screenshots of OneAI interface</div>
+
+            <div class="preview">
+              <div class="carousel" id="carousel">
+                <div class="carousel-track" id="carouselTrack">
+                </div>
+                
+                <button class="carousel-nav nav-left" id="prevBtn">‹</button>
+                <button class="carousel-nav nav-right" id="nextBtn">›</button>
+                
+                <div class="indicators" id="indicators">
+                </div>
+              </div>
+              
+              <div style="padding:10px 12px">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <div>
+                    <strong>Preview</strong>
+                    <div class="small">Screenshots of OneAI interface</div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </aside>
-      </main>
+          </aside>
 
-      <section class="credits" aria-labelledby="credits-heading">
-        <h3 id="credits-heading">Credits</h3>
-        <div class="credits-grid">
-          <div class="person"><strong>MatteoMeo</strong><div class="small">Main developer — ROM, optimizations, fixes</div></div>
-          <div class="person"><strong>Fwp</strong><div class="small">Testing and kernel work</div></div>
-          <div class="person"><strong>Devcore</strong><div class="small">Ports and major contributions</div></div>
-          <div class="person"><strong>Kusoi</strong><div class="small">Website & deployment</div></div>
+          <aside class="credits" aria-labelledby="credits-heading">
+            <h4 id="credits-heading">Credits</h4>
+            <div class="credits-grid">
+              <div class="person"><strong>MatteoMeo</strong><div class="small">Main developer — ROM, optimizations, fixes</div></div>
+              <div class="person"><strong>Fwp</strong><div class="small">Testing and kernel work</div></div>
+              <div class="person"><strong>Devcore</strong><div class="small">Ports and major contributions</div></div>
+              <div class="person"><strong>Kusoi</strong><div class="small">Website & deployment</div></div>
+            </div>
+          </aside>
         </div>
-      </section>
+      </main>
 
       <footer>
         <p>© 2025 OneAI, By Kusoi — All rights reserved</p>
@@ -1404,6 +1444,20 @@
     </div>
 
 <script>
+function showModal(modal) {
+  if (modal) {
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function hideModal(modal) {
+  if (modal) {
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+}
+
 (function(){
   const carouselImages = [
     { src: 'https://i.imgur.com/g0J8vV3.jpeg', alt: 'OneAI Logo' },
@@ -1680,3 +1734,5 @@
 
 })();
 </script>
+  </body>
+</html>
