@@ -58,9 +58,9 @@
       .brand:hover{transform:scale(1.02)}
       
       .logo{
-        width:160px;
-        height:160px;
-        border-radius:32px;
+        width:110px;
+        height:110px;
+        border-radius:28px;
         display:grid;
         place-items:center;
         background:linear-gradient(180deg,#111827, rgba(255,255,255,0.02));
@@ -74,14 +74,19 @@
         transform:scale(1.1);
         box-shadow:0 12px 40px rgba(123,104,238,0.4);
       }
-      
+
       .logo img{
-        width:130px;
-        height:130px;
+        width:88px;
+        height:88px;
         object-fit:cover;
         border-radius:24px;
       }
-
+      
+      .logo img.fading {
+        opacity:0;
+        transform:scale(0.98);
+      }
+      
       .logo svg{width:64px;height:64px}
       h1{font-size:20px;margin:0;font-weight:700;letter-spacing:-0.2px}
       .tag{font-size:13px;color:var(--muted)}
@@ -1621,5 +1626,69 @@
   });
   initializeCarousel();
   startAutoSlide();
+})();
+</script>
+<script>
+(function(){
+  const logoWrap = document.querySelector('.brand .logo');
+  if (!logoWrap) return;
+
+  const logoImg = logoWrap.querySelector('img');
+  if (!logoImg) return;
+
+  const easterEggImage = 'https://i.imgur.com/coFPICJ.png';
+
+  const requiredClicks = 5;
+  const windowMs = 1200;
+  let clicks = [];
+
+  const preload = (url) => {
+    if (!url) return;
+    const p = new Image();
+    p.src = url;
+  };
+  preload(easterEggImage);
+
+  let showingEgg = false;
+  const originalSrc = logoImg.src;
+
+  function attemptSwap() {
+    const now = Date.now();
+    clicks = clicks.filter(ts => now - ts <= windowMs);
+    if (clicks.length >= requiredClicks) {
+      clicks = [];
+      toggleEgg();
+    }
+  }
+
+  function toggleEgg(){
+    const newSrc = showingEgg ? originalSrc : (easterEggImage || originalSrc);
+    if (logoImg.src === newSrc) {
+      showingEgg = !showingEgg;
+      return;
+    }
+
+    logoImg.classList.add('fading');
+
+    setTimeout(() => {
+      logoImg.src = newSrc;
+      void logoImg.offsetWidth;
+      logoImg.classList.remove('fading');
+      showingEgg = !showingEgg;
+    }, 340);
+  }
+
+  logoWrap.addEventListener('click', (e) => {
+    clicks.push(Date.now());
+    if (clicks.length > requiredClicks) clicks.shift();
+    attemptSwap();
+  });
+
+  logoWrap.setAttribute('tabindex', '0');
+  logoWrap.style.cursor = 'pointer';
+  logoWrap.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') toggleEgg();
+  });
+
 })();
 </script>
