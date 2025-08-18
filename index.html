@@ -411,6 +411,36 @@
         backdrop-filter:blur(6px);
         animation:fadeInLeft 0.8s ease-out 0.4s both;
         transition:transform 0.3s ease,box-shadow 0.3s ease;
+        position:relative;
+        overflow:hidden;
+      }
+
+      .sidecard::before{
+        content:'';
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        border-radius:16px;
+        padding:2px;
+        background:linear-gradient(45deg, 
+          #7b68ee, 
+          #6bd6ff, 
+          #ff6b9d, 
+          #c96fff, 
+          #7b68ee, 
+          #6bd6ff, 
+          #ff6b9d, 
+          #c96fff
+        );
+        background-size:400% 400%;
+        mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite:xor;
+        -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite:xor;
+        animation:gradientShift 4s ease-in-out infinite;
+        z-index:-1;
       }
       
       .sidecard:hover{
