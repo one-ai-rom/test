@@ -336,7 +336,7 @@
       .card:hover h3{color:#ffffff}
       .card:hover p{color:#b8c9e0}
 
-      .preview-section{
+      .credits-section{
         padding:28px;
         border-radius:18px;
         background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
@@ -348,7 +348,7 @@
         animation:fadeInUp 0.8s ease-out 0.9s both;
       }
 
-      .preview-section::before{
+      .credits-section::before{
         content:'';
         position:absolute;
         top:0;
@@ -376,24 +376,71 @@
         z-index:-1;
       }
       
-      .preview-section:hover{
+      .credits-section:hover{
         transform:translateY(-2px);
         box-shadow:0 20px 60px rgba(123,104,238,0.1);
       }
 
-      .preview-section h3{
+      .credits-section h3{
         margin:0 0 16px 0;
         font-size:20px;
         color:#eaf2ff;
         text-align:center;
       }
 
-      .preview-section p{
+      .credits-section p{
         margin:0 0 20px 0;
         color:var(--muted);
         text-align:center;
         font-size:14px;
       }
+
+      .credits-grid{
+        display:grid;
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+      }
+      
+      .person{
+        padding:16px;
+        border-radius:12px;
+        background:rgba(255,255,255,0.01);
+        border:1px solid rgba(255,255,255,0.02);
+        transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+        opacity:0;
+        transform:translateY(15px);
+        animation:fadeInUp 0.5s ease-out forwards;
+      }
+
+      .person:nth-child(1) { animation-delay: 0.7s; }
+      .person:nth-child(2) { animation-delay: 0.8s; }
+      .person:nth-child(3) { animation-delay: 0.9s; }
+      .person:nth-child(4) { animation-delay: 1.0s; }
+      
+      .person:hover{
+        transform:translateY(-3px) scale(1.02);
+        background:rgba(255,255,255,0.03);
+        border-color:rgba(123,104,238,0.2);
+        box-shadow:0 8px 25px rgba(123,104,238,0.15);
+      }
+
+      .person strong{
+        font-size:14px;
+        color:#dce9ff;
+        display:block;
+        margin-bottom:4px;
+        transition:color 0.3s ease;
+      }
+
+      .person:hover strong{color:#ffffff}
+
+      .person .small{
+        font-size:12px;
+        color:var(--muted);
+        transition:color 0.3s ease;
+      }
+
+      .person:hover .small{color:#b8c9e0}
 
       .sidebar{
         display:flex;
@@ -498,6 +545,57 @@
       .small{font-size:13px;color:var(--muted);transition:color 0.3s ease}
       .download-item:hover .small{color:#b8c9e0}
 
+      .preview{
+        padding:20px;
+        border-radius:16px;
+        background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+        border:1px solid rgba(255,255,255,0.03);
+        backdrop-filter:blur(6px);
+        transition:transform 0.3s ease,box-shadow 0.3s ease;
+        position:relative;
+        overflow:hidden;
+        animation:fadeInLeft 0.8s ease-out 0.6s both;
+      }
+
+      .preview::before{
+        content:'';
+        position:absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        border-radius:16px;
+        padding:2px;
+        background:linear-gradient(45deg, 
+          #7b68ee, 
+          #6bd6ff, 
+          #ff6b9d, 
+          #c96fff, 
+          #7b68ee, 
+          #6bd6ff, 
+          #ff6b9d, 
+          #c96fff
+        );
+        background-size:400% 400%;
+        mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite:xor;
+        -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite:xor;
+        animation:gradientShift 4s ease-in-out infinite;
+        z-index:-1;
+      }
+      
+      .preview:hover{
+        transform:translateY(-2px);
+        box-shadow:0 20px 60px rgba(123,104,238,0.1);
+      }
+
+      .preview h4{
+        margin:0 0 12px 0;
+        font-size:16px;
+        color:#eaf2ff;
+      }
+
       .carousel{
         position:relative;
         overflow:hidden;
@@ -600,96 +698,6 @@
         margin:28px 0;
         border-radius:6px;
         animation:fadeIn 0.8s ease-out 0.9s both;
-      }
-
-      .credits{
-        padding:16px;
-        border-radius:16px;
-        background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-        border:1px solid rgba(255,255,255,0.03);
-        backdrop-filter:blur(6px);
-        transition:transform 0.3s ease,box-shadow 0.3s ease;
-        position:relative;
-        overflow:hidden;
-        animation:fadeInLeft 0.8s ease-out 0.6s both;
-      }
-
-      .credits::before{
-        content:'';
-        position:absolute;
-        top:0;
-        left:0;
-        right:0;
-        bottom:0;
-        border-radius:16px;
-        padding:2px;
-        background:linear-gradient(45deg, 
-          #7b68ee, 
-          #6bd6ff, 
-          #ff6b9d, 
-          #c96fff, 
-          #7b68ee, 
-          #6bd6ff, 
-          #ff6b9d, 
-          #c96fff
-        );
-        background-size:400% 400%;
-        mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        mask-composite:xor;
-        -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite:xor;
-        animation:gradientShift 4s ease-in-out infinite;
-        z-index:-1;
-      }
-      
-      .credits:hover{
-        transform:translateY(-2px);
-        box-shadow:0 20px 60px rgba(123,104,238,0.1);
-      }
-
-      .credits h4{
-        margin:0 0 12px 0;
-        font-size:16px;
-        color:#eaf2ff;
-      }
-      
-      .credits-grid{
-        display:grid;
-        grid-template-columns:1fr;
-        gap:8px;
-      }
-      
-      .person{
-        padding:8px;
-        border-radius:8px;
-        background:rgba(255,255,255,0.01);
-        border:1px solid rgba(255,255,255,0.02);
-        transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
-        opacity:0;
-        transform:translateY(15px);
-        animation:fadeInUp 0.5s ease-out forwards;
-      }
-
-      .person:nth-child(1) { animation-delay: 0.7s; }
-      .person:nth-child(2) { animation-delay: 0.8s; }
-      .person:nth-child(3) { animation-delay: 0.9s; }
-      .person:nth-child(4) { animation-delay: 1.0s; }
-      
-      .person:hover{
-        transform:translateY(-1px);
-        background:rgba(255,255,255,0.03);
-        border-color:rgba(123,104,238,0.2);
-      }
-
-      .person strong{
-        font-size:13px;
-        color:#dce9ff;
-      }
-
-      .person .small{
-        font-size:11px;
-        color:var(--muted);
-        margin-top:2px;
       }
 
       footer{
@@ -1003,12 +1011,13 @@
           flex:0 0 auto;
         }
         
-        .sidebar .credits{
+        .sidebar .preview{
           min-width:280px;
           flex:0 0 auto;
         }
         
         .cards{grid-template-columns:repeat(2,1fr)}
+        .credits-grid{grid-template-columns:repeat(2,1fr)}
       }
       
       @media (max-width:768px){
@@ -1058,7 +1067,7 @@
           border-radius:14px;
         }
 
-        .preview-section{
+        .credits-section{
           padding:20px;
           border-radius:14px;
         }
@@ -1077,7 +1086,7 @@
         }
         
         .sidebar .sidecard,
-        .sidebar .credits{
+        .sidebar .preview{
           min-width:auto;
         }
         
@@ -1087,6 +1096,11 @@
         }
         
         .features{
+          grid-template-columns:1fr;
+          gap:10px;
+        }
+        
+        .credits-grid{
           grid-template-columns:1fr;
           gap:10px;
         }
@@ -1125,11 +1139,12 @@
         }
         
         .hero{padding:16px}
-        .preview-section{padding:16px}
+        .credits-section{padding:16px}
         .sidecard{padding:16px}
-        .credits{padding:12px}
+        .preview{padding:16px}
         .card{padding:14px}
         .feature{padding:10px}
+        .person{padding:12px}
         
         .modal{padding:12px}
         .modal-panel{
@@ -1192,9 +1207,9 @@
         .lead{font-size:13px}
         
         .hero{padding:14px}
-        .preview-section{padding:14px}
+        .credits-section{padding:14px}
         .sidecard{padding:14px}
-        .credits{padding:10px}
+        .preview{padding:14px}
         
         nav{gap:8px}
         
@@ -1303,18 +1318,14 @@
             </div>
           </section>
 
-          <section class="preview-section">
-            <h3>Preview</h3>
-            <p>Screenshots of OneAI interface</p>
-            <div class="carousel" id="carousel">
-              <div class="carousel-track" id="carouselTrack">
-              </div>
-              
-              <button class="carousel-nav nav-left" id="prevBtn">‹</button>
-              <button class="carousel-nav nav-right" id="nextBtn">›</button>
-              
-              <div class="indicators" id="indicators">
-              </div>
+          <section class="credits-section">
+            <h3>Credits</h3>
+            <p>Meet the team behind OneAI</p>
+            <div class="credits-grid">
+              <div class="person"><strong>MatteoMeo</strong><div class="small">Main developer — ROM, optimizations, fixes</div></div>
+              <div class="person"><strong>Fwp</strong><div class="small">Testing and kernel work</div></div>
+              <div class="person"><strong>Devcore</strong><div class="small">Ports and major contributions</div></div>
+              <div class="person"><strong>Kusoi</strong><div class="small">Website & deployment</div></div>
             </div>
           </section>
         </div>
@@ -1330,13 +1341,17 @@
             </div>
           </aside>
 
-          <aside class="credits" aria-labelledby="credits-heading">
-            <h4 id="credits-heading">Credits</h4>
-            <div class="credits-grid">
-              <div class="person"><strong>MatteoMeo</strong><div class="small">Main developer — ROM, optimizations, fixes</div></div>
-              <div class="person"><strong>Fwp</strong><div class="small">Testing and kernel work</div></div>
-              <div class="person"><strong>Devcore</strong><div class="small">Ports and major contributions</div></div>
-              <div class="person"><strong>Kusoi</strong><div class="small">Website & deployment</div></div>
+          <aside class="preview" aria-labelledby="preview-heading">
+            <h4 id="preview-heading">Preview</h4>
+            <div class="carousel" id="carousel">
+              <div class="carousel-track" id="carouselTrack">
+              </div>
+              
+              <button class="carousel-nav nav-left" id="prevBtn">‹</button>
+              <button class="carousel-nav nav-right" id="nextBtn">›</button>
+              
+              <div class="indicators" id="indicators">
+              </div>
             </div>
           </aside>
         </div>
